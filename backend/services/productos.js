@@ -1,5 +1,5 @@
 const fs = require("fs");
-
+const { ProductoDao } = require("../daos/productoDao");
 class ServiceProductos {
   constructor(url_archivo) {
     this.url_archivo = url_archivo;
@@ -33,9 +33,11 @@ class ServiceProductos {
     });
   }
 
+  
   async getAll() {
+    const productoDao = new ProductoDao();
     try {
-      return this.getTable();
+      return await productoDao.getAll();
     } catch (error) {
       console.log(error);
       return { message: "Ocurrio un error" };

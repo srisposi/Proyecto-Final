@@ -1,7 +1,7 @@
 const express = require("express");
 const res = require("express/lib/response");
 const routerProductos = express.Router();
-let { config } = require("../config/config");
+let { config } = require("../config");
 const ServiceProductos = require("../services/productos");
 const ADMIN = config.admin;
 
@@ -12,6 +12,7 @@ function adminValidation(res) {
     res.status(401).json({message: "Usuario no válido"});
   } 
 }
+
 
 routerProductos.get("/", async (req, res) => {
   res.status(200).json(await producto.getAll());
