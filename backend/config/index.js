@@ -2,7 +2,8 @@ require("dotenv").config();
 
 let config = {
     port: process.env.PORT,
-    cors: process.env.CORS
+    cors: process.env.CORS,
+    admin: true
 }
 
 let mongo_db = {

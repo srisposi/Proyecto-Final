@@ -47,13 +47,8 @@ class ServiceProductos {
   //Función para agregar productos al listado
   async save(objeto) {
     try {
-      const tableData = await this.getTable();
-      objeto.id = tableData[tableData.length - 1].id + 1;
-      const newData = tableData.concat(objeto);
-
-      return this.saveTable(newData).then(() => {
-        return objeto;
-      });
+      const productoDao = new ProductoDao(); 
+      return await productoDao.create(objeto);
     } catch (error) {
       console.log(error);
       return { message: "Ocurrio un error" };
