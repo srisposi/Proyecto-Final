@@ -1,7 +1,8 @@
 const fs = require("fs");
 const UUID = require("uuidjs");
 const ServiceProductos = require("./ServiceProductos");
-
+const { CarritoDao } = require("../daos/CarritoDaos");
+const { ProductoDao } = require("../daos/ProductoDaos");
 class ServiceCarrito {
   constructor(url_archivo) {
     this.url_archivo = url_archivo;
@@ -38,7 +39,9 @@ class ServiceCarrito {
 
   async getAll() {
     try {
-      return this.getTable();
+      const carritoDao = new CarritoDao();
+      return carritoDao.getAll();
+
     } catch (error) {
       console.log(error);
       return { message: "Ocurrio un error" };
@@ -52,53 +55,40 @@ class ServiceCarrito {
   //Función para crear carrito y devolver id
   async createCarrito() {
     try {
+      const carritoDao = new CarritoDao();
+      
       let carrito = {
         id: this.getUiid(),
         timeStamp: Date.now(),
         producto: [],
       };
-      return this.save(carrito).then(() => {
-        return carrito;
-      });
+
+      return carritoDao.create(carrito);
+
     } catch (error) {
       console.log(error);
-    }
-  }
-
-  //Función para agregar productos al listado
-  async save(objeto) {
-    try {
-      const tableData = await this.getTable();
-      const newData = tableData.concat(objeto);
-
-      return this.saveTable(newData).then(() => {
-        return objeto;
-      });
-    } catch (error) {
-      console.log(error);
-      return { message: "Ocurrio un error" };
     }
   }
 
   //Función para Listar todos los productos disponibles por id
   async getById(id) {
     try {
-      return this.getTable().then((response) => {
-        let dataResponse = response.find((x) => x.id == id);
-        if(!dataResponse){
-          throw "No se encontró";
-        } 
-        return this.getDb().then((response) => {
-          let productos = response.productos;
-          dataResponse.producto = dataResponse.producto.map((x) => {
-            return productos.find(element => element.id == x)
-          });
-          return dataResponse;
-        });
-      })
-      .catch((err) => {
-        return { message: `Ocurrio un error ${err}` };          
-      });
+      const carritoDao = new CarritoDao();
+      let carrito = await carritoDao.getById(id);
+
+      const productoDao = new ProductoDao();
+      
+      let productos = [];
+
+      for (let index = 0; index < carrito.productos.length; index++) {
+        let prodComplete = await productoDao.getById(carrito.productos[index]);
+        productos.push(prodComplete);
+      }
+
+      carrito.productos = productos;
+
+      return carrito;
+
     } catch (error) {
       console.log(error);
       return { message: "Ocurrio un error" };
@@ -106,32 +96,40 @@ class ServiceCarrito {
   }
 
   //Función para actualizar un producto por id
-  async updateById(id, idProd) {
+  async addProductoById(id, idProd) {
     try {
-      let dataResponse = null;
-      return this.getTable()
-        .then((response) => {
-          const result = response.map((oldObject) => {
-            if (oldObject.id == id) {
-              oldObject["producto"].push(idProd);
-              dataResponse = oldObject;
-              return oldObject;
-            } else {
-              return oldObject;
-            }
-          });
-          return result;
-        })
-        .then((result) => {
-          return this.saveTable(result)
-            .then(() => {
-              return dataResponse;
-            })
-            .catch((err) => {
-              console.log(err);
-              return { message: "Ocurrio un error" };
-            });
-        });
+      const carritoDao = new CarritoDao();
+      let carrito = await carritoDao.getById(id);
+      let productosAsignados = []
+
+      if(carrito.productos.length > 0)
+        productosAsignados = carrito.productos;
+      
+      productosAsignados.push(idProd);
+      
+      await carritoDao.update(id, {productos: productosAsignados});
+
+      return this.getById(id);
+
+    } catch (error) {
+      console.log(error);
+      return { message: "Ocurrio un error" };
+    }
+  }
+
+  async removeProductoById(id, idProd) {
+    try {
+      const carritoDao = new CarritoDao();
+      let carrito = carritoDao.getById(id);
+
+      let productosAsignados = []
+
+      if(carrito.productos !== undefined)
+        productosAsignados = carrito.productos;
+      
+      productosAsignados.push(idProd);
+      
+      return await carritoDao.update(id, {productos: productosAsignados});
     } catch (error) {
       console.log(error);
       return { message: "Ocurrio un error" };
@@ -141,29 +139,12 @@ class ServiceCarrito {
   //Función para elimiar buscando un id
   async deleteById(id) {
     try {
-      return this.getTable().then((response) => {
-        let newData = [];
-        response.forEach((element) => {
-          if (element.id != id) {
-            newData.push(element);
-          }
-        });
-        return this.saveTable(newData);
-      });
+      const carritoDao = new CarritoDao();
+      await carritoDao.delete(id);
     } catch (error) {
       console.log(error);
     }
   }
 
-  async deleteAll() {
-    try {
-      return this.getTable().then((response) => {
-        response = [];
-        return this.saveTable(response);
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  }
 }
 module.exports = ServiceCarrito;

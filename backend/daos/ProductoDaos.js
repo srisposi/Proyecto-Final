@@ -1,29 +1,28 @@
-const schemaProducto = require("../models/ModelProducto");
+const schema = require("../models/ModelProducto");
 const mongoose = require("mongoose");
 
 class ProductoDao {
-    
-    getAll(){
-        return schemaProducto.find();
-    }
+  async getAll() {
+    return await schema.find();
+  }
 
-    getById(id){
-        return schemaProducto.findById(id);
-    }
+  async getById(id) {
+    return await schema.findById(id);
+  }
 
-    create(productoNew){
-        let productoCreated = schemaProducto.create({...productoNew});
-        return productoCreated;
-    }
+  async create(entityToCreate) {
+    let entityCreated = await schema.create({ ...entityToCreate });
+    return entityCreated;
+  }
 
-    async update(id, producto){
-        await schemaProducto.updateOne({ _id: id },{ ...producto });
-        return schemaProducto.findById(id);
-    }
+  async update(id, entityToUpdate) {
+    await schema.updateOne({ _id: id }, { ...entityToUpdate });
+    return schema.findById(id);
+  }
 
-    async delete(id) {
-        await schemaProducto.findByIdAndDelete(id);
-    }
+  async delete(id) {
+    await schema.findByIdAndDelete(id);
+  }
 }
 
-module.exports = { ProductoDao }
+module.exports = { ProductoDao };

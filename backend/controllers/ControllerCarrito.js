@@ -17,10 +17,16 @@ routerCarrito.post("/", async (req, res) => {
   res.status(200).json(await carrito.createCarrito());
 });
 
-routerCarrito.put("/:id", async (req, res) => {
+routerCarrito.put("/add/:id", async (req, res) => {
   let { id } = req.params;
   let { idProducto } = req.body;
-  res.status(200).json(await carrito.updateById(id, idProducto));
+  res.status(200).json(await carrito.addProductoById(id, idProducto));
+});
+
+routerCarrito.put("/remove/:id", async (req, res) => {
+  let { id } = req.params;
+  let { idProducto } = req.body;
+  res.status(200).json(await carrito.removeProductoById(id, idProducto));
 });
 
 routerCarrito.delete("/:id", async (req, res) => {
@@ -28,10 +34,5 @@ routerCarrito.delete("/:id", async (req, res) => {
   await carrito.deleteById(id);
   res.status(200).json("carrito eliminado");
 });
-
-routerCarrito.delete("/", async (req, res) => {
-  await carrito.deleteAll();
-  res.status(200).json("Carrito eliminado por completo");
-})
 
 module.exports = routerCarrito;

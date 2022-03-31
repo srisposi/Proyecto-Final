@@ -15,7 +15,7 @@ class ServiceProductos {
   async save(objeto) {
     try {
       const productoDao = new ProductoDao();
-      return productoDao.create(objeto);
+      return await productoDao.create(objeto);
     } catch (error) {
       console.log(error);
       return { message: "Ocurrio un error" };
@@ -26,7 +26,7 @@ class ServiceProductos {
   async getById(id) {
     try {
       const productoDao = new ProductoDao();
-      return productoDao.getById(id);
+      return await productoDao.getById(id);
       
     } catch (error) {
       console.log(error);
