@@ -4,39 +4,6 @@ const ServiceProductos = require("./ServiceProductos");
 const { CarritoDao } = require("../daos/CarritoDaos");
 const { ProductoDao } = require("../daos/ProductoDaos");
 class ServiceCarrito {
-  constructor(url_archivo) {
-    this.url_archivo = url_archivo;
-    this.formatFile = "utf-8";
-    this.table = "carrito";
-    this.productoServices = new ServiceProductos();
-  }
-
-  async getDb() {
-    return fs.promises
-      .readFile(this.url_archivo, this.formatFile)
-      .then((response) => {
-        let jsonResponse = JSON.parse(response);
-        return jsonResponse;
-      });
-  }
-
-  async getTable() {
-    return this.getDb().then((response) => {
-      return response[this.table];
-    });
-  }
-
-  async saveTable(newTableData) {
-    this.getDb().then((response) => {
-      response[this.table] = newTableData;
-      return fs.promises
-        .writeFile(this.url_archivo, JSON.stringify(response))
-        .then(() => {
-          return newTableData;
-        });
-    });
-  }
-
   async getAll() {
     try {
       const carritoDao = new CarritoDao();
@@ -119,17 +86,8 @@ class ServiceCarrito {
 
   async removeProductoById(id, idProd) {
     try {
-      const carritoDao = new CarritoDao();
-      let carrito = carritoDao.getById(id);
+      //TODO: Agregar funcion para eliminar 1 producto de la lista con el id que pasa el controller
 
-      let productosAsignados = []
-
-      if(carrito.productos !== undefined)
-        productosAsignados = carrito.productos;
-      
-      productosAsignados.push(idProd);
-      
-      return await carritoDao.update(id, {productos: productosAsignados});
     } catch (error) {
       console.log(error);
       return { message: "Ocurrio un error" };

@@ -25,7 +25,7 @@ export default function Products() {
   const [products, setProducts] = useState([]);
 
   const getProducts = (()=> {
-    fetch('http://localhost:3101/api/productos')
+    fetch('http://localhost:8007/api/productos')
       .then(response => response.json())
       .then(data => setProducts(data));
   });
