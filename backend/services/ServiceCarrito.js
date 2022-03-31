@@ -1,14 +1,13 @@
 const fs = require("fs");
 const UUID = require("uuidjs");
-const ServiceProductos = require("./productos");
-// const moment = require('moment');
-// const dateNow = Date.now();
+const ServiceProductos = require("./ServiceProductos");
+
 class ServiceCarrito {
   constructor(url_archivo) {
     this.url_archivo = url_archivo;
     this.formatFile = "utf-8";
     this.table = "carrito";
-    this.productoServices = new ServiceProductos("./data/db.json");
+    this.productoServices = new ServiceProductos();
   }
 
   async getDb() {
