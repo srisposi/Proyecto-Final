@@ -1,5 +1,4 @@
-const { ProductoDao } = require("../daos/ProductoDaos");
-
+const { ProductoDao } = require("../daos/Firebase/ProductoDaos");
 class ServiceProductos {
   async getAll() {
     const productoDao = new ProductoDao();
