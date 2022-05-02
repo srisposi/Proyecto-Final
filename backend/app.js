@@ -5,6 +5,7 @@ const app = express();
 const path = require("path");
 const routerCart = require("./controllers/ControllerCarrito");
 const routerProd = require("./controllers/ControllerProductos");
+const routerUser = require("./controllers/ControllerUsuario");
 const cors = require("cors");
 const mongoose = require("mongoose");
 
@@ -21,13 +22,15 @@ mongoose
     app.use(express.static(__dirname + "/public"));
     app.use(cors(`${config.cors}`));
 
-    app.get("/health", (req, res, next) => {
+    app.get("/api/health", (req, res, next) => {
       res.status(200).send({ message: "OK!" });
     });
 
     app.use("/api/productos", routerProd);
 
     app.use("/api/carritos", routerCart);
+
+    app.use("/api/usuario", routerUser);
 
     app.listen(config.port, () => {
       console.log(

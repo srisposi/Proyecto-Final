@@ -1,4 +1,4 @@
-const { ProductoDao } = require("../daos/Firebase/ProductoDaos");
+const { ProductoDao } = require("../daos/ProductoDaos");
 class ServiceProductos {
   async getAll() {
     const productoDao = new ProductoDao();
@@ -26,7 +26,6 @@ class ServiceProductos {
     try {
       const productoDao = new ProductoDao();
       return await productoDao.getById(id);
-      
     } catch (error) {
       console.log(error);
       return { message: "Ocurrio un error" };
