@@ -3,12 +3,21 @@ const bcrypt = require("bcrypt");
 // const bcrypt = require("../utils/helpers/crypt");
 
 class UsuarioDao {
-  async getUser(user) {
-    const emailUser = user.email;
-    console.log("se obtiene el email del usuario", emailUser);
-    console.log("el user era", user);
-    return await schemaUsuario.findOne({ email: emailUser });
+  async getUser(email, password) {
+    return await schemaUsuario.findOne(
+      { email: email },
+      { password: password }
+    );
   }
+
+  // async getUserPasswordAndEmail(user) {
+  //   const user = await schemaUsuario.findOne({
+  //     email: emailUser,
+  //     password: passwordUser,
+  //   });
+
+  //   return user;
+  // }
 
   async create(userToCreate) {
     //Lógica sin Hash

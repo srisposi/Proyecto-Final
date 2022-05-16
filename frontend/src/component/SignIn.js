@@ -42,19 +42,36 @@ export default function SignIn() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    // eslint-disable-next-line no-console
+
     console.log({
       email: data.get("email"),
       password: data.get("password"),
     });
   };
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [fields, setFields] = useState({
+    email: "",
+    password: "",
+  });
+
+  const setForm = (name, value) => {
+    setFields({ ...fields, [name]: value });
+  };
+
   const history = useNavigate();
 
-  const signin = (e) => {
+  const signin = async (e) => {
     e.preventDefault();
+    let response = await SignIn(fields.email, fields.password);
+    console.log(response);
+    getUser();
+    history.push("/");
+  };
+
+  const getUser = () => {
+    fetch("http://localhost:8007/api/usuario/signIn")
+      .then((response) => response.json())
+      .then((data) => localStorage.setItem("user", data));
   };
 
   return (
@@ -82,8 +99,8 @@ export default function SignIn() {
             sx={{ mt: 1 }}
           >
             <TextField
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={fields.email}
+              onChange={(e) => setForm("email", e.target.value)}
               margin="normal"
               required
               fullWidth
@@ -94,8 +111,8 @@ export default function SignIn() {
               autoFocus
             />
             <TextField
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={fields.password}
+              onChange={(e) => setForm("password", e.target.value)}
               margin="normal"
               required
               fullWidth
