@@ -1,4 +1,5 @@
 const { ProductoDao } = require("../daos/ProductoDaos");
+const { UsuarioDao } = require("../daos/UsuarioDaos");
 class ServiceProductos {
   async getAll() {
     const productoDao = new ProductoDao();

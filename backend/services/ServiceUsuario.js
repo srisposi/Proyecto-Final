@@ -1,34 +1,82 @@
 const { json } = require("express/lib/response");
 const { UsuarioDao } = require("../daos/UsuarioDaos");
 const UnauthorizeException = require("../exceptions/UnauthorizeException");
+const bcrypt = require("bcrypt");
 class ServiceUsuario {
-  async updateUsuario(newUsuario) {
+  encodePassword(password) {
+    let newPassword = this.encode64(password);
+    return newPassword;
+  }
+
+  encode64(token) {
+    let buff = new Buffer(token);
+    let base64data = buff.toString("base64");
+    return base64data;
+  }
+
+  decode64(token) {
+    let buff = new Buffer(token, "base64");
+    let text = buff.toString("ascii");
+    return text;
+  }
+
+  async getUserByToken(token) {
     try {
       const usuarioDao = new UsuarioDao();
-      const usuarioExist = await usuarioDao.getUser(newUsuario.email);
-      console.log("usuario existe", usuarioExist);
-      if (!usuarioExist) {
-        console.log("Ingreso en el if");
-        console.log(newUsuario);
-        return await usuarioDao.create(newUsuario);
-      } else {
-        console.log("estoy en el else");
-        return { message: "El usuario ya existe" };
-      }
+      let data = this.decode64(token); //user:password
+      const email = data.split(":")[0];
+      const password = data.split(":")[1];
+
+      const usuario = await usuarioDao.getUserByEmailAndPassword(
+        email,
+        password
+      );
+
+      return usuario;
     } catch (error) {
-      console.log(error);
-      return { message: "Ocurrió un error" };
+      return null;
     }
   }
 
-  async signInUsuario(email, password) {
+  async createUsuario(email, password, firstname, lastname) {
+    try {
+      const usuarioDao = new UsuarioDao();
+      const usuario = await usuarioDao.getUser(email);
+
+      if (!usuario) {
+        return await usuarioDao.create(
+          email,
+          this.encodePassword(password),
+          firstname,
+          lastname
+        );
+      } else {
+        return { message: "User already exist" };
+      }
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  }
+
+  async getToken(email, password) {
     const usuarioDao = new UsuarioDao();
-    const usuarioExist = await usuarioDao.getUser(email, password);
-    console.log(usuarioExist);
-    if (usuarioExist) {
-      return { token: `${email}:${password}` };
+    const usuario = await usuarioDao.getUserByEmailAndPassword(
+      email,
+      this.encodePassword(password)
+    );
+
+    if (usuario) {
+      let tokenResponse = this.encode64(
+        `${email}:${this.encodePassword(password)}`
+      );
+      //verify token
+      console.log(this.decode64(tokenResponse));
+      const user = await this.getUserByToken(tokenResponse);
+      console.log(user);
+
+      return tokenResponse;
     } else {
-      throw new UnauthorizeException("El usuario no existe");
+      throw new UnauthorizeException("Not allowed");
     }
   }
 }

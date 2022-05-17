@@ -4,7 +4,7 @@ const usuarioSchema = mongoose.Schema({
   lastName: { type: String },
   firstName: { type: String },
   email: { type: String, unique: true, lowercase: true },
-  password: { type: String, select: false },
+  password: { type: String },
   signUpDate: { type: Date, default: Date.now() },
   lastLogin: Date,
 });
