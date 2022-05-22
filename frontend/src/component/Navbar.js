@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import { AppBar, Toolbar, Typography, IconButton, Button } from "@mui/material";
 import { makeStyles } from "@material-ui/core/styles";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
@@ -36,23 +36,22 @@ const useStyles = makeStyles((theme) => ({
 export default function Navbar() {
   const classes = useStyles();
   const [{ basket, user }, dispatch] = useStateValue();
+  const [loguedUser, setLoguedUser] = useState({ email: null });
+
   const history = useNavigate();
 
   const auth = getAuth();
 
+  useEffect(() => {
+    const email = localStorage.getItem("userEmail");
+    console.log("el email logueado", email);
+
+    if (email !== null) setLoguedUser({ email: email });
+  }, []);
+
   const handleAuth = () => {
-    if (user) {
-      signOut(auth);
-      dispatch({
-        type: actionTypes.EMPTY_BASKET,
-        basket: [],
-      });
-      dispatch({
-        type: actionTypes.SET_USER,
-        user: null,
-      });
-      history("/");
-    }
+    localStorage.clear();
+    history("/");
   };
 
   return (
@@ -71,12 +70,14 @@ export default function Navbar() {
           </Link>
           <div className={classes.grow} />
           <Typography variant="h6" color="textPrimary" component="p">
-            Hello {user ? user.email : "Guest"}
+            Hello {loguedUser.email ? loguedUser.email : "Guest"}
           </Typography>
           <div className={classes.button}>
             <Link to="/signin">
               <Button variant="outlined" onClick={handleAuth}>
-                <strong>{user ? "Sign Out" : "Sign In"}</strong>
+                <strong>
+                  {loguedUser.email ? "Log out" : "Sign in / Sign out"}
+                </strong>
               </Button>
             </Link>
             <Link to="checkoutpage">

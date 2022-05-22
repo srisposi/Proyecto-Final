@@ -2,28 +2,45 @@ const { json } = require("express/lib/response");
 const { UsuarioDao } = require("../daos/UsuarioDaos");
 const UnauthorizeException = require("../exceptions/UnauthorizeException");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const res = require("express/lib/response");
+const PRIVATE_KEY = "myprivatekey";
+const md5 = require("md5");
 class ServiceUsuario {
   encodePassword(password) {
-    let newPassword = this.encode64(password);
+    let newPassword = md5(password);
+    console.log(newPassword);
+    let prueba = md5(newPassword);
+    console.log(prueba);
     return newPassword;
   }
 
-  encode64(token) {
-    let buff = new Buffer(token);
-    let base64data = buff.toString("base64");
-    return base64data;
+  generateToken(email) {
+    const token = jwt.sign({ data: email }, PRIVATE_KEY, { expiresIn: "1h" });
+    return token;
   }
 
-  decode64(token) {
-    let buff = new Buffer(token, "base64");
-    let text = buff.toString("ascii");
-    return text;
+  decodeToken(token) {
+    const decodedToken = jwt.decode(token, { complete: true });
+    return decodedToken.payload;
   }
+
+  // encode64(token) {
+  //   let buff = new Buffer(token);
+  //   let base64data = buff.toString("base64");
+  //   return base64data;
+  // }
+
+  // decode64(token) {
+  //   let buff = new Buffer(token, "base64");
+  //   let text = buff.toString("ascii");
+  //   return text;
+  // }
 
   async getUserByToken(token) {
     try {
       const usuarioDao = new UsuarioDao();
-      let data = this.decode64(token); //user:password
+      let data = this.decodeToken(token); //user:password
       const email = data.split(":")[0];
       const password = data.split(":")[1];
 
@@ -66,11 +83,11 @@ class ServiceUsuario {
     );
 
     if (usuario) {
-      let tokenResponse = this.encode64(
+      let tokenResponse = this.generateToken(
         `${email}:${this.encodePassword(password)}`
       );
       //verify token
-      console.log(this.decode64(tokenResponse));
+      console.log(this.decodeToken(tokenResponse));
       const user = await this.getUserByToken(tokenResponse);
       console.log(user);
 

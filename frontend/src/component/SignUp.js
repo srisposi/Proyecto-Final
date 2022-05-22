@@ -16,7 +16,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Link as RouteLink, useNavigate } from "react-router-dom";
 import { auth } from "../firebaseConfig";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import Registrar from "../services/ServiceRegister";
+import ServiceRegistrar from "../services/ServiceRegister";
 
 function Copyright(props) {
   return (
@@ -69,17 +69,18 @@ export default function SignUp() {
     setFields({ ...fields, [name]: value });
   };
 
-  const history = useNavigate();
+  const navigate = useNavigate();
 
   const signup = async (e) => {
     e.preventDefault();
-    let response = await Registrar(
+    let response = await ServiceRegistrar(
       fields.firstName,
       fields.lastName,
       fields.email,
       fields.password
     );
     console.log(response);
+    navigate("/signin");
   };
 
   return (

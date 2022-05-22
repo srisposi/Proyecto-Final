@@ -12,7 +12,7 @@ let usuario = new ServiceUsuario();
 
 async function adminValidation(req, res) {
   let auth = req.headers.auth;
-  let user = await usuario.getUserByToken(auth);
+  let user = await usuario.decodeToken(auth);
   if (!user) return res.status(400).json({ message: "Invalid user" });
 }
 

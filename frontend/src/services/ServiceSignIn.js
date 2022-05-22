@@ -1,4 +1,4 @@
-async function SignIn(email, password) {
+async function ServiceSignIn(email, password) {
   console.log(email, password);
 
   return fetch("http://localhost:8007/api/usuario/signIn", {
@@ -18,7 +18,8 @@ async function SignIn(email, password) {
     })
     .then((data) => data)
     .catch(() => {
+      console.log("estoy aca");
       return "Datos incorrectos";
     });
 }
-export default SignIn;
+export default ServiceSignIn;

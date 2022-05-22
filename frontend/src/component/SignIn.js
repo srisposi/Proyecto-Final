@@ -16,7 +16,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Link as RouteLink, useNavigate } from "react-router-dom";
 import { auth } from "../firebaseConfig";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import Registrar from "../services/ServiceRegister";
+import ServiceSignIn from "../services/ServiceSignIn";
 
 function Copyright(props) {
   return (
@@ -58,14 +58,14 @@ export default function SignIn() {
     setFields({ ...fields, [name]: value });
   };
 
-  const history = useNavigate();
+  const navigate = useNavigate();
 
   const signin = async (e) => {
     e.preventDefault();
-    let response = await SignIn(fields.email, fields.password);
-    console.log(response);
-    getUser();
-    history.push("/");
+    let response = await ServiceSignIn(fields.email, fields.password);
+    localStorage.setItem("userToken", response.token);
+    localStorage.setItem("userEmail", fields.email);
+    navigate("/");
   };
 
   const getUser = () => {

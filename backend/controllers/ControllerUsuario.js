@@ -28,7 +28,7 @@ routerUsuario.post("/signIn", async (req, res) => {
   try {
     let { email, password } = req.body;
     let token = await serviceUsuario.getToken(email, password);
-    res.status(200).json(token);
+    res.status(200).json({ token: token });
   } catch (error) {
     if (error instanceof UnauthorizeException)
       res.status(400).json({ message: error.message });

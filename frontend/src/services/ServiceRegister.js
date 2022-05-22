@@ -1,4 +1,4 @@
-async function Registrar(firstName, lastName, email, password) {
+async function ServiceRegistrar(firstName, lastName, email, password) {
   console.log("llamaando api", firstName, lastName, email, password);
 
   return fetch("http://localhost:8007/api/usuario/register", {
@@ -15,13 +15,14 @@ async function Registrar(firstName, lastName, email, password) {
     method: "POST",
   })
     .then((response) => {
-      if (response.status === 200) return response.json();
+      if (response.status === 201) return response.json();
       throw new Error("Invalid Request");
     })
     .then((data) => data)
-    .catch(() => {
+    .catch((error) => {
+      console.error(error);
       return "Datos incorrectos";
     });
 }
 
-export default Registrar;
+export default ServiceRegistrar;

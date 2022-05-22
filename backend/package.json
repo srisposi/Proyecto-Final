@@ -21,6 +21,8 @@
     "firebase": "^9.6.10",
     "firebase-admin": "^10.0.2",
     "joi": "^17.6.0",
+    "jsonwebtoken": "^8.5.1",
+    "md5": "^2.3.0",
     "mongodb": "^4.4.1",
     "mongoose": "^6.2.8",
     "uuidjs": "^4.2.11"
