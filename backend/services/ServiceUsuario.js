@@ -6,6 +6,8 @@ const jwt = require("jsonwebtoken");
 const res = require("express/lib/response");
 const PRIVATE_KEY = "myprivatekey";
 const md5 = require("md5");
+const Email = require("../utils/helpers/email");
+const loggerWinston = require("../utils/loggers/winston");
 class ServiceUsuario {
   encodePassword(password) {
     let newPassword = md5(password);
@@ -39,6 +41,7 @@ class ServiceUsuario {
 
   async getUserByToken(token) {
     try {
+      loggerWinston.info("Estamos obteniendo un token");
       const usuarioDao = new UsuarioDao();
       let data = this.decodeToken(token); //user:password
       const email = data.split(":")[0];
@@ -51,7 +54,7 @@ class ServiceUsuario {
 
       return usuario;
     } catch (error) {
-      return null;
+      return loggerWinston.error(JSON.stringify(error));
     }
   }
 
@@ -61,6 +64,8 @@ class ServiceUsuario {
       const usuario = await usuarioDao.getUser(email);
 
       if (!usuario) {
+        const email = new Email();
+        email.generateEmail();
         return await usuarioDao.create(
           email,
           this.encodePassword(password),

@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "artillery": "^2.0.0-17",
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",
@@ -25,7 +26,10 @@
     "md5": "^2.3.0",
     "mongodb": "^4.4.1",
     "mongoose": "^6.2.8",
-    "uuidjs": "^4.2.11"
+    "nodemailer": "^6.7.5",
+    "twilio": "^3.77.1",
+    "uuidjs": "^4.2.11",
+    "winston": "^3.7.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"
