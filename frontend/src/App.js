@@ -1,4 +1,5 @@
 import "./App.css";
+import React, { useState } from "react";
 import Navbar from "./component/Navbar";
 import Products from "./component/Products";
 import CheckoutPage from "./component/CheckoutPage";
@@ -11,6 +12,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { actionTypes } from "./reducer";
 import { useStateValue } from "./StateProvider";
 import CheckOut from "./component/CheckOutForm/Checkout";
+import Ingreso from "./component/chat/ingreso";
 
 function App() {
   const [{ user }, dispatch] = useStateValue();
@@ -36,6 +38,7 @@ function App() {
           <Route path="/checkoutpage" element={<CheckoutPage />} />
           <Route path="/" element={<Products />} />
           <Route path="/checkout" element={<CheckOut />} />
+          <Route path="/chat" element={<Ingreso />} />
         </Routes>
       </div>
     </Router>

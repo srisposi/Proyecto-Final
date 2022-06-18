@@ -27,6 +27,7 @@
     "mongodb": "^4.4.1",
     "mongoose": "^6.2.8",
     "nodemailer": "^6.7.5",
+    "socket.io": "^4.5.1",
     "twilio": "^3.77.1",
     "uuidjs": "^4.2.11",
     "winston": "^3.7.2"
