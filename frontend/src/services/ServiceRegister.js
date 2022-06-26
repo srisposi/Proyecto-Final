@@ -1,7 +1,9 @@
 async function ServiceRegistrar(firstName, lastName, email, password) {
   console.log("llamaando api", firstName, lastName, email, password);
 
-  return fetch("http://localhost:8007/api/usuario/register", {
+  const baseURL = process.env.REACT_APP_API_URL;
+
+  return fetch(`${baseURL} /api/usuario/register`, {
     body: JSON.stringify({
       firstName: lastName,
       lastName: firstName,

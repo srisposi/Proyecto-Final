@@ -68,8 +68,10 @@ export default function SignIn() {
     navigate("/");
   };
 
+  const baseURL = process.env.REACT_APP_API_URL;
+
   const getUser = () => {
-    fetch("http://localhost:8007/api/usuario/signIn")
+    fetch(`${baseURL}/api/usuario/signIn`)
       .then((response) => response.json())
       .then((data) => localStorage.setItem("user", data));
   };

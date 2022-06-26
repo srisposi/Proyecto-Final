@@ -25,8 +25,10 @@ export default function Products() {
   const classes = useStyles();
   const [products, setProducts] = useState([]);
 
+  const baseURL = process.env.REACT_APP_API_URL;
+
   const getProducts = () => {
-    fetch("http://localhost:8007/api/productos")
+    fetch(`${baseURL}/api/productos`)
       .then((response) => response.json())
       .then((data) => setProducts(data));
   };
