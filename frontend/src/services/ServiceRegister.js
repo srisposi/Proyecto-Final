@@ -3,7 +3,7 @@ async function ServiceRegistrar(firstName, lastName, email, password) {
 
   const baseURL = process.env.REACT_APP_API_URL;
 
-  return fetch(`${baseURL} /api/usuario/register`, {
+  return fetch(`${baseURL}/api/usuario/register`, {
     body: JSON.stringify({
       firstName: lastName,
       lastName: firstName,

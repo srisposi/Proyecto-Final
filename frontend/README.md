@@ -1,70 +1,98 @@
-# Getting Started with Create React App
+# Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+El proyecto de Front se desarrollo con React y con mui que es un framework de css para darle el estilo y diseño a la página. Además de los componentes básicos construídos para crear el Ecommerce, se crearon los siguientes componentes importantes para el entendimiento del Proyecto de Frontend:
 
-## Available Scripts
+## Components
 
-In the project directory, you can run:
+En la ruta raíz de componetes se encuentran los componentes básicos para la construcción del ecommerce, los cuáles son:
 
-### `npm start`
+### Componentes Básicos
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+1. Navbar: Dónde se contruye el menú del proyecto
+2. Products: Dónde se construye la lógica en dónde se mostrarán los productos
+3. Product: Dónde se construye la lógica que crea las card para cada producto.
+4. SignIn: Dónde se consumen los servicios para realizar el SignIn en la aplicación, con su respectivo SignOut
+5. SignUp: Dónde se consumen los servicios para realizar el SignUp en la aplicación.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Chat
 
-### `npm test`
+En esta parte se encuentra la lógica del chat del lado del cliente. Se encuentra el diseño de las pantallas y el estilado realizado con css.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### CheckOutForm
 
-### `npm run build`
+Tomando de base un templete, se desarrolló la logíca para realizar una pasarela de pago, luego de finalizada la compra del carrito correspondiente. Se accedé a esta parte haciendo click en el Checkout al finalizar la compra
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Pages
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+En esta parte del archivo encontramos dos carpetas con la siguiente lógica:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### ClientChat
 
-### `npm run eject`
+Acá encontramos la lógica de los chat del lado del cliente utilizando la librería de socket.io-client.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Dashboard
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+En esta parte encontramos la lógica del chat lado del cliente, en referencia al manjo de las diferentes salas y el detalle del typing cuando un usuario está escribiendo.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Services
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+En los servicios del Front se pueden encontrar los fetch que se realizan a la API para traer la información necesaria para realizar el Registro, el Login y el SignOut de la aplicación.
+En nuestro caso se resumen estas funciones a dos servicios: 1. ServiceRegister.js 2. ServiceSigIn.js
 
-## Learn More
+## .env
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Definimos las variables de entorno del Front. Para nuestra aplicación se definieron las siguientes variables:
+REACT_APP_API_URL=https://ecommerce-aura-proyecto-final.herokuapp.com
+REACT_APP_BACKEND_URL="http://localhost:3001"
+Una variable que se utiliza para apuntar al proyecto montado en producción para conectar con la API y una variable que apunta al proyecto en para comunicarse el chat
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Librerías
 
-### Code Splitting
+### dependencias
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+    * mui
+    * axios
+    * firebase
+    * moongose
+    * react
+    * react-router-dom
+    * socket.io-client
 
-### Analyzing the Bundle Size
+## ¿Qué tengo que tener instalado para correr el proyecto?
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+```
+- `node js versión 14 o superior`
+- `npm versión 7 o superior`
+```
 
-### Making a Progressive Web App
+## Cómo correr el Proyecto desde 0
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### Forma 1:
 
-### Advanced Configuration
+Posicionado en la carpeta raíz se ejecutará el siguiente comando:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+- `cd frontend`
+  dentro de la carpeta frontend se deberá instalar la carpeta de node modolues de node mediante el siguiente comando:
+  `- `npm ci
+  Una vez instalado el node_modules, se deberá correr el siguiente comando para correr el proyecto:
+  `npm run start`
 
-### Deployment
+### Forma 2:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+La otra forma de correr el proyecto es mediante la siguiente manera:
+run-back:
+npm run --prefix ./backend dev
+Revisar
 
-### `npm run build` fails to minify
+## Infraestructura
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Se realizó la infraestructura en Vercel. Colocando las variables de entorno en el servidor en la nube.
+
+## Repositorio del Proyecto
+
+https://github.com/srisposi/Proyecto-Final
+https://github.com/srisposi/Proyecto-Final-Front
+
+## Demo de la Aplicación
+
+https://proyecto-final-front-psi.vercel.app/

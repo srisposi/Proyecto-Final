@@ -1,0 +1,46 @@
+.messageBlock {
+  height: 85vh;
+  margin: 5px;
+  background-color: white;
+  border-radius: 5px;
+}
+
+.messageSpace {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  background-color: white;
+  border-radius: 5px;
+}
+
+.messageSpace > li {
+  padding: 0.5rem 1rem;
+}
+
+.messageSpace > li:nth-child(odd) {
+  background: #efefef;
+  border-radius: 5px;
+}
+
+.writeArea {
+  margin: 5px;
+}
+
+.typingPlace {
+  font-weight: 500;
+  min-height: 35px;
+}
+
+input {
+  width: 80%;
+  margin: 5px;
+  border-radius: 5px;
+  height: 23px;
+}
+
+button {
+  margin: 5px;
+  border-radius: 5px;
+  width: 100px;
+  height: 30px;
+}

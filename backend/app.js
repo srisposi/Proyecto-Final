@@ -15,45 +15,52 @@ const numCPUs = require("os").cpus().length;
 
 // const queryPerformance = require("./utils/performance/queryPerformance");
 
-mongoose.connect(mongo_db.mongo_atlas, { useNewUrlParser: true }).then(() => {
-  const app = express();
+mongoose
+  .connect(
+    "mongodb+srv://root:coderhouse@cluster0.znqdu.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+    { useNewUrlParser: true }
+  )
+  .then(() => {
+    const app = express();
 
-  app.use(express.json());
-  app.use(express.urlencoded({ extended: true }));
-  app.use(express.static(__dirname + "/public"));
-  app.use(cors(`${config.cors}`));
+    app.use(express.json());
+    app.use(express.urlencoded({ extended: true }));
+    app.use(express.static(__dirname + "/public"));
+    app.use(cors(`${config.cors}`));
 
-  if (mode_cluster && cluster.isPrimary) {
-    loggerWinston.info(`PID -> $process.pid`);
-    for (let i = 0; i < numCPUs; i++) {
-      cluster.fork();
+    if (mode_cluster && cluster.isPrimary) {
+      loggerWinston.info(`PID -> $process.pid`);
+      for (let i = 0; i < numCPUs; i++) {
+        cluster.fork();
+      }
+      cluster.on("exit", (worker, a, b) => {
+        loggerWinston.error(`Murió el subproceso ${worker.process.pid}`);
+        cluster.fork();
+      });
+    } else {
+      const app = express();
+      app.get("/api/health", (req, res, next) => {
+        res.status(200).send({ message: "OK!" });
+      });
     }
-    cluster.on("exit", (worker, a, b) => {
-      loggerWinston.error(`Murió el subproceso ${worker.process.pid}`);
-      cluster.fork();
+    app.use("/api/productos", routerProd);
+
+    app.use("/api/carritos", routerCart);
+
+    app.use("/api/usuario", routerUser);
+
+    //Socket-chat
+
+    app.listen(config.port, () => {
+      console.log(
+        `Estamos escuchando en está url: http://localhost:${config.port}`
+      );
     });
-  } else {
-    const app = express();
-    app.get("/api/health", (req, res, next) => {
-      res.status(200).send({ message: "OK!" });
-    });
-  }
-  app.use("/api/productos", routerProd);
-
-  app.use("/api/carritos", routerCart);
-
-  app.use("/api/usuario", routerUser);
-
-  app.listen(config.port, () => {
-    console.log(
-      `Estamos escuchando en está url: http://localhost:${config.port}`
-    );
+    const queryHealth = () => {
+      const app = express();
+      app.get("/api/health", (req, res, next) => {
+        res.status(200).send({ message: "OK!" });
+      });
+    };
+    // queryPerformance.queryPerformance(queryHealth);
   });
-  const queryHealth = () => {
-    const app = express();
-    app.get("/api/health", (req, res, next) => {
-      res.status(200).send({ message: "OK!" });
-    });
-  };
-  // queryPerformance.queryPerformance(queryHealth);
-});

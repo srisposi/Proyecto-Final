@@ -12,7 +12,8 @@ import { onAuthStateChanged } from "firebase/auth";
 import { actionTypes } from "./reducer";
 import { useStateValue } from "./StateProvider";
 import CheckOut from "./component/CheckOutForm/Checkout";
-import Ingreso from "./component/chat/ingreso";
+import ClientChat from "./pages/ClientChat/ClientChat";
+import Dashboard from "./pages/Dashboard/Dashboard";
 
 function App() {
   const [{ user }, dispatch] = useStateValue();
@@ -38,7 +39,8 @@ function App() {
           <Route path="/checkoutpage" element={<CheckoutPage />} />
           <Route path="/" element={<Products />} />
           <Route path="/checkout" element={<CheckOut />} />
-          <Route path="/chat" element={<Ingreso />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route Route path="/chat" element={<ClientChat />} />
         </Routes>
       </div>
     </Router>
