@@ -6,4 +6,4 @@ COPY . ./
 RUN rm .env 
 RUN mv .env.prod .env
 RUN npm ci --silent
-CMD node app.js
+CMD node main.js

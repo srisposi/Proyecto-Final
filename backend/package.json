@@ -1,13 +1,12 @@
 {
-  "name": "desafios",
+  "name": "Proyecto Final",
   "version": "1.0.0",
   "description": "- npm init -y\r - npm i express\r - npm i nodemon -D",
-  "main": "app.js",
+  "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon main.js",
     "start": "node main.js",
-    "build": "node main.js",
     "debug": "node main.js"
   },
   "keywords": [],
