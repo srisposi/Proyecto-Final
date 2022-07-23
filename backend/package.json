@@ -6,9 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon main.js",
-    "start": "node app.js",
-    "build": "node app.js",
-    "debug": "node app.js"
+    "start": "node main.js",
+    "build": "node main.js",
+    "debug": "node main.js"
   },
   "keywords": [],
   "author": "",

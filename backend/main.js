@@ -216,8 +216,6 @@ mongoose
     //server start
 
     server.listen(config.port, () => {
-      console.log(
-        `Estamos escuchando en está url: http://localhost:${config.port}`
-      );
+      console.log(`Estamos escuchando en está url: ${config.port}`);
     });
   });
